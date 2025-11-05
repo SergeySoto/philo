@@ -1,12 +1,12 @@
 NAME=philo
 
 CC= cc
-CFLAGS=-Wall -Werror -Wextra
+CFLAGS=-Wall -Werror -Wextra -pthread
 
 INCLUDE = philo.h
 OBJ_DIR = obj
 
-SRC = src/philo.c
+SRC = src/philo.c src/parse.c src/philo_utils.c src/inits.c
 
 OBJ = $(patsubst src/%.c, $(OBJ_DIR)/%.o, $(SRC))
 

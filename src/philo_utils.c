@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/04 19:21:23 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/05 15:59:59 by ssoto-su         ###   ########.fr       */
+/*   Created: 2025/11/05 11:59:28 by ssoto-su          #+#    #+#             */
+/*   Updated: 2025/11/05 15:28:02 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-int	main(int argc, char **argv)
+void	mem_alloc(t_data *table)
 {
-	t_data	table;
-	t_philo	philo;
-
-	if (validate_args(argc, argv) == 1)
+	table->philos = malloc(sizeof(t_philo) * table->philo_num);
+	if (!table->philos)
 	{
-		printf("Error\n");
-		return (1);
+		printf("No has alocado loca\n");
+		exit(1);
 	}
-	init_table(argc, argv, &table);
-	init_philo(&philo, &table);
-
-	return (0);
+	table->forks = malloc(sizeof(pthread_mutex_t) * table->philo_num);
+	if (!table->forks)
+	{
+		pritnf("Usa el tenedor, mal educado\n");
+		free(table->philos);
+		exit(1);
+	}
 }
