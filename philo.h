@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 19:38:54 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/05 16:34:04 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/05 16:51:10 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int		validate_args(int argc, char **argv);
 void	init_table(int argc, char **argv, t_data *table);
 void	init_philo(t_philo *philo, t_data *table);
 void	init_forks(t_data *table);
-
+void	init_all(int argc, char **argv, t_data *table, t_philo *philo);
 //Utils
 void	mem_alloc(t_data *table);
 

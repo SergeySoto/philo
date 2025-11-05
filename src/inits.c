@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 15:59:34 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/05 16:32:26 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/05 16:47:49 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,17 @@ void	init_forks(t_data *table)
 		if (pthread_mutex_init(&table->forks[i], NULL) != 0)
 		{
 			printf("Error: initializing mutex\n");
+			free(table->forks);
+			free(table->philos);
 			exit(1);
 		}
 		i++;
 	}
+}
+
+void	init_all(int argc, char **argv, t_data *table, t_philo *philo)
+{
+	init_table(argc, argv, table);
+	init_philo(philo, table);
+	init_forks(table);
 }
