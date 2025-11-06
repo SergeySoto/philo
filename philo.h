@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 19:38:54 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/05 16:51:10 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/06 19:33:56 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <limits.h>
 # include <pthread.h>
 # include <sys/time.h>
+
+typedef struct s_philo t_philo;
 
 typedef struct s_data
 {
@@ -50,9 +52,13 @@ int		validate_args(int argc, char **argv);
 //Inits
 void	init_table(int argc, char **argv, t_data *table);
 void	init_philo(t_philo *philo, t_data *table);
-void	init_forks(t_data *table);
-void	init_all(int argc, char **argv, t_data *table, t_philo *philo);
+int		init_forks(t_data *table);
+int		init_all(int argc, char **argv, t_data *table);
 //Utils
-void	mem_alloc(t_data *table);
+int		mem_alloc(t_data *table);
+void	hollocaust_mutex(t_data *table);
+//Routine
+void	*start_routine(void *arg);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 15:59:34 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/05 16:47:49 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/06 20:08:20 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	init_philo(t_philo *philo, t_data *table)
 	}
 }
 
-void	init_forks(t_data *table)
+int	init_forks(t_data *table)
 {
 	int	i;
 
@@ -51,17 +51,37 @@ void	init_forks(t_data *table)
 		if (pthread_mutex_init(&table->forks[i], NULL) != 0)
 		{
 			printf("Error: initializing mutex\n");
-			free(table->forks);
-			free(table->philos);
-			exit(1);
+			hollocaust_mutex(table);
+			return (1);
 		}
 		i++;
 	}
+	return (0);
 }
 
-void	init_all(int argc, char **argv, t_data *table, t_philo *philo)
+int	init_all(int argc, char **argv, t_data *table)
 {
+	int	i;
+
 	init_table(argc, argv, table);
-	init_philo(philo, table);
-	init_forks(table);
+	if (mem_alloc(table) == 1)
+		return (1);
+	init_philo(table->philos, table);
+	if (init_forks(table) == 1)
+		return (1);
+	i = 0;
+	while (i < table->philo_num)
+	{
+		if (pthread_create(&table->philos[i].thread, NULL, &start_routine, &table->philos[i]) != 0)
+			return (1);
+		i++;
+	}
+	i = 0;
+	while (i < table->philo_num)
+	{
+		if (pthread_join(table->philos[i].thread, NULL) != 0)
+			return (1);
+		i++;
+	}
+	return (0);
 }
