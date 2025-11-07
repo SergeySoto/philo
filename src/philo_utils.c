@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 11:59:28 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/06 19:16:56 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/07 18:58:27 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,9 @@ void	hollocaust_mutex(t_data *table)
 	}
 	free(table->forks);
 	free(table->philos);
+}
+
+long long	get_time(void)
+{
+	
 }

@@ -6,19 +6,15 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 19:21:23 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/06 20:08:27 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/07 16:08:12 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	*start_routine(void *arg)
+void	eat()
 {
-	t_philo *philo;
-
-	philo = (t_philo *)arg;
-	printf("Philosopher %d begins his routine\n", philo->id);
-	return (NULL);
+	
 }
 
 int	main(int argc, char **argv)
