@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 19:38:54 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/07 16:59:34 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/10 20:14:53 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,22 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-typedef struct s_philo t_philo;
+typedef struct s_philo	t_philo;
 
-typedef struct s_data
+typedef struct t_table
 {
-	int				philo_num;
+	int				num_philo;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				meals_num;
+	int				num_meals;
+	long long		start_time;
+	int				someone_died;
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
-}	t_data;
+	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	death_mutex;
+}	t_table;
 
 typedef struct s_philo
 {
@@ -41,24 +45,31 @@ typedef struct s_philo
 	pthread_t		thread;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-	t_data			*data;
+	t_table			*table;
 }	t_philo;
 
 //Parse
-int		ft_isdigit(int c);
-int		ft_isspace(int c);
-long	ft_atol(char *str);
-int		validate_args(int argc, char **argv);
+int			ft_isdigit(int c);
+int			ft_isspace(int c);
+long		ft_atol(char *str);
+int			validate_args(int argc, char **argv);
 //Inits
-void	init_table(int argc, char **argv, t_data *table);
-void	init_philo(t_philo *philo, t_data *table);
-int		init_forks(t_data *table);
-int		init_all(int argc, char **argv, t_data *table);
+int			init_table(int argc, char **argv, t_table *table);
+void		init_philo(t_philo *philo, t_table *table);
+int			init_forks(t_table *table);
+int			init_all(int argc, char **argv, t_table *table);
 //Utils
-int		mem_alloc(t_data *table);
-void	hollocaust_mutex(t_data *table);
+int			mem_alloc(t_table *table);
+int			hollocaust_mutex(t_table *table, int size);
+long long	get_time(void);
+void		precise_time(long long time);
+void		print_pthread(t_philo *philo, char *str);
 //Routine
-void	*start_routine(void *arg);
+void		*start_routine(void *arg);
+void		eat_routine(t_philo *philo);
+void		sleep_routine(t_philo *philo);
+void		think_routine(t_philo *philo);
+void		*monitor_death(void *arg);
 
 
 #endif

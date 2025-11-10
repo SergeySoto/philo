@@ -6,31 +6,42 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 16:53:42 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/07 18:54:03 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/10 20:25:14 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	eat(t_philo *philo)
+void	eat_routine(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->left_fork);
-		printf("%d has taken a fork\n", philo->id);
 		pthread_mutex_lock(philo->right_fork);
-		printf("%d has taken a fork\n", philo->id);
+		print_pthread(philo, "has taken a fork");
 	}
 	else
 	{
 		pthread_mutex_lock(philo->right_fork);
-		printf("%d has taken a fork\n", philo->id);
 		pthread_mutex_lock(philo->left_fork);
-		printf("%d has taken a fork\n", philo->id);
+		print_pthread(philo, "has taken a fork");
 	}
-	printf("%d is eating\n", philo->id);
+	print_pthread(philo, "is eating");
+	precise_time(philo->table->time_to_eat);
+	philo->last_meal_time = get_time();
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
+}
+
+void	sleep_routine(t_philo *philo)
+{
+	print_pthread(philo, "is sleeping");
+	precise_time(philo->table->time_to_sleep);
+}
+
+void	think_routine(t_philo *philo)
+{
+	print_pthread(philo, "is thinking");
 }
 
 void	*start_routine(void *arg)
@@ -38,10 +49,11 @@ void	*start_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	printf("Philosopher %d begins his routine\n", philo->id);
 	while (1)
 	{
-		
+		eat_routine(philo);
+		sleep_routine(philo);
+		think_routine(philo);
 	}
 	return (NULL);
 }

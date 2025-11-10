@@ -6,21 +6,21 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 11:59:28 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/07 18:58:27 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/10 18:40:45 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-int	mem_alloc(t_data *table)
+int	mem_alloc(t_table *table)
 {
-	table->philos = malloc(sizeof(t_philo) * table->philo_num);
+	table->philos = malloc(sizeof(t_philo) * table->num_philo);
 	if (!table->philos)
 	{
 		printf("Error: Memory allocation failed\n");
 		return (1);
 	}
-	table->forks = malloc(sizeof(pthread_mutex_t) * table->philo_num);
+	table->forks = malloc(sizeof(pthread_mutex_t) * table->num_philo);
 	if (!table->forks)
 	{
 		printf("Error: Memory allocation failed\n");
@@ -30,21 +30,50 @@ int	mem_alloc(t_data *table)
 	return (0);
 }
 
-void	hollocaust_mutex(t_data *table)
+int	hollocaust_mutex(t_table *table, int size)
 {
 	int	i;
 
 	i = 0;
-	while (i < table->philo_num)
+	while (i < size)
 	{
 		pthread_mutex_destroy(&table->forks[i]);
 		i++;
 	}
 	free(table->forks);
 	free(table->philos);
+	return (1);
 }
 
 long long	get_time(void)
 {
-	
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+void	precise_time(long long time)
+{
+	long long	start;
+	long long	current_time;
+
+	start = get_time();
+	while(1)
+	{
+		current_time = get_time();
+		if (current_time - start >= time)
+			break ;
+		usleep(100);
+	}
+}
+
+void	print_pthread(t_philo *philo, char *str)
+{
+	long long	time;
+
+	pthread_mutex_lock(&philo->table->print_mutex);
+	time = get_time() - philo->table->start_time;
+	printf("%lld %d %s\n", time, philo->id, str);
+	pthread_mutex_unlock(&philo->table->print_mutex);
 }
