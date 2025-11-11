@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 15:59:34 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/10 20:18:20 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/11 20:10:52 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,16 @@ int	init_table(int argc, char **argv, t_table *table)
 		printf("Error: initializing mutex\n");
 		return (1);
 	}
+	if (pthread_mutex_init(&table->death_mutex, NULL) != 0)
+	{
+		printf("Error: initializing mutex\n");
+		return (1);
+	}
+	if (pthread_mutex_init(&table->meal_mutex, NULL) != 0)
+	{
+		printf("Error: initializing mutex\n");
+		return (1);
+	}
 	return (0);
 }
 
@@ -41,7 +51,7 @@ void	init_philo(t_philo *philo, t_table *table)
 	{
 		philo[i].id = i + 1;
 		philo[i].meals_eaten = 0;
-		philo[i].last_meal_time = 0;
+		philo[i].last_meal_time = table->start_time;
 		philo[i].left_fork = &table->forks[i];
 		philo[i].right_fork = &table->forks[(i + 1) % table->num_philo];
 		philo[i].table = table;
@@ -77,6 +87,10 @@ int	init_threads(t_table *table)
 			return (hollocaust_mutex(table, table->num_philo));
 		i++;
 	}
+	if (pthread_create(&table->waiter_thread, NULL, &waiter_routine, table) != 0)
+		return (hollocaust_mutex(table, table->num_philo));
+	if (pthread_join(&table->waiter_thread, NULL) != 0)
+		return (hollocaust_mutex(table, table->num_philo));
 	i = 0;
 	while (i < table->num_philo)
 	{
@@ -84,8 +98,6 @@ int	init_threads(t_table *table)
 			return (hollocaust_mutex(table, table->num_philo));
 		i++;
 	}
-	if (pthread_create(&table->death_mutex, NULL, &monitor_death, table) != 0)
-		return (hollocaust_mutex(table, table->num_philo));
 	return (0);
 }
 

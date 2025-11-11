@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 19:38:54 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/10 20:14:53 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/11 20:08:24 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct t_table
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	death_mutex;
+	pthread_mutex_t	meal_mutex;
+	pthread_t		waiter_thread;
 }	t_table;
 
 typedef struct s_philo
@@ -69,7 +71,9 @@ void		*start_routine(void *arg);
 void		eat_routine(t_philo *philo);
 void		sleep_routine(t_philo *philo);
 void		think_routine(t_philo *philo);
-void		*monitor_death(void *arg);
+//Monitor
+void		*waiter_routine(void *arg);
+int			check_death(t_philo *philo);
 
 
 #endif
