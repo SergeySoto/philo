@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 19:38:54 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/11 20:08:24 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/12 17:59:46 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_philo
 	t_table			*table;
 }	t_philo;
 
+int			start_simulation(int argc, char **argv, t_table *table);
 //Parse
 int			ft_isdigit(int c);
 int			ft_isspace(int c);
@@ -58,8 +59,9 @@ int			validate_args(int argc, char **argv);
 //Inits
 int			init_table(int argc, char **argv, t_table *table);
 void		init_philo(t_philo *philo, t_table *table);
+int			init_threads(t_table *table);
 int			init_forks(t_table *table);
-int			init_all(int argc, char **argv, t_table *table);
+int			init_mutex(t_table *table);
 //Utils
 int			mem_alloc(t_table *table);
 int			hollocaust_mutex(t_table *table, int size);

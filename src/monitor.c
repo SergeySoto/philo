@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 19:38:52 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/11 20:09:07 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/12 17:54:12 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,25 @@ int	check_death(t_philo *philo)
 	return (0);
 }
 
-int	check_all_ate(t_philo *philo)
+int	check_all_ate(t_table *table)
 {
-	int	n_meals;
+	int	i;
 
-	n_meals = 0;
-
-	pthread_mutex_lock(&philo->table->meal_mutex);
-	if (philo->meals_eaten >= philo->table->num_meals)
+	if (table->num_meals == -1)
 		return (0);
+	i = 0;
+	while (i < table->num_philo)
+	{
+		pthread_mutex_lock(&table->meal_mutex);
+		if (table->philos[i].meals_eaten < table->num_meals)
+		{
+			pthread_mutex_unlock(&table->meal_mutex);
+			return (0);
+		}
+		pthread_mutex_unlock(&table->meal_mutex);
+		i++;
+	}
+	return (1);
 }
 
 void	*waiter_routine(void *arg)
@@ -56,8 +66,14 @@ void	*waiter_routine(void *arg)
 		while (i < table->num_philo)
 		{
 			if (check_death(&table->philos[i]) == 1)
+			{
 				print_pthread(&table->philos[i], "died");
+				return (NULL);
+			}
 			i++;
 		}
+		if (check_all_ate(table) == 1)
+			return (NULL);
 	}
+	return (NULL);
 }
