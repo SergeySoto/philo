@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 11:59:28 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/10 18:40:45 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/12 19:38:37 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ int	hollocaust_mutex(t_table *table, int size)
 		pthread_mutex_destroy(&table->forks[i]);
 		i++;
 	}
+	pthread_mutex_destroy(&table->print_mutex);
+	pthread_mutex_destroy(&table->death_mutex);
+	pthread_mutex_destroy(&table->meal_mutex);
 	free(table->forks);
 	free(table->philos);
 	return (1);
@@ -73,6 +76,11 @@ void	print_pthread(t_philo *philo, char *str)
 	long long	time;
 
 	pthread_mutex_lock(&philo->table->print_mutex);
+	if (philo->table->someone_died == 1)
+	{
+		pthread_mutex_unlock(&philo->table->print_mutex);
+		return ;
+	}
 	time = get_time() - philo->table->start_time;
 	printf("%lld %d %s\n", time, philo->id, str);
 	pthread_mutex_unlock(&philo->table->print_mutex);
