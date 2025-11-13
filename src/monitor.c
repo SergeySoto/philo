@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 19:38:52 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/12 17:54:12 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/13 20:50:16 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	*waiter_routine(void *arg)
 	int		i;
 
 	table = (t_table *)arg;
+	if (table->num_philo == 1)
+		return (NULL);
 	while (1)
 	{
 		i = 0;

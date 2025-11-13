@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 11:59:28 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/12 19:38:37 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/13 20:52:35 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void	precise_time(long long time)
 void	print_pthread(t_philo *philo, char *str)
 {
 	long long	time;
-
 	pthread_mutex_lock(&philo->table->print_mutex);
 	if (philo->table->someone_died == 1)
 	{

@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 16:53:42 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/12 19:48:13 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/13 20:50:18 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	*start_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-
 	if (philo->id % 2 == 0)
 		usleep(philo->table->time_to_eat * 500);
 	while (1)
