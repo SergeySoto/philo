@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 16:53:42 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/14 14:04:32 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/14 19:46:45 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@ void	eat_routine(t_philo *philo)
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->left_fork);
+		print_pthread(philo, "has taken a fork");
 		pthread_mutex_lock(philo->right_fork);
 		print_pthread(philo, "has taken a fork");
 	}
 	else
 	{
 		pthread_mutex_lock(philo->right_fork);
+		print_pthread(philo, "has taken a fork");
 		pthread_mutex_lock(philo->left_fork);
 		print_pthread(philo, "has taken a fork");
 	}
@@ -51,7 +53,7 @@ void	think_routine(t_philo *philo)
 
 void	*one_notes(void *arg)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)arg;
 	print_pthread(philo, "has taken a fork");
@@ -69,10 +71,14 @@ void	*start_routine(void *arg)
 		usleep(philo->table->time_to_eat * 500);
 	while (1)
 	{
-		if (philo->table->someone_died == 1)
+		if (death_row(philo) == 1)
 			return (NULL);
 		eat_routine(philo);
+		if (death_row(philo) == 1)
+			return (NULL);
 		sleep_routine(philo);
+		if (death_row(philo) == 1)
+			return (NULL);
 		think_routine(philo);
 	}
 	return (NULL);

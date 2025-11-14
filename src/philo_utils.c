@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 11:59:28 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/13 20:52:35 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/14 17:28:29 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ int	mem_alloc(t_table *table)
 	if (!table->philos)
 	{
 		printf("Error: Memory allocation failed\n");
+		pthread_mutex_destroy(&table->print_mutex);
+		pthread_mutex_destroy(&table->death_mutex);
+		pthread_mutex_destroy(&table->meal_mutex);
 		return (1);
 	}
 	table->forks = malloc(sizeof(pthread_mutex_t) * table->num_philo);
@@ -25,6 +28,9 @@ int	mem_alloc(t_table *table)
 	{
 		printf("Error: Memory allocation failed\n");
 		free(table->philos);
+		pthread_mutex_destroy(&table->print_mutex);
+		pthread_mutex_destroy(&table->death_mutex);
+		pthread_mutex_destroy(&table->meal_mutex);
 		return (1);
 	}
 	return (0);
@@ -62,7 +68,7 @@ void	precise_time(long long time)
 	long long	current_time;
 
 	start = get_time();
-	while(1)
+	while (1)
 	{
 		current_time = get_time();
 		if (current_time - start >= time)
@@ -74,6 +80,7 @@ void	precise_time(long long time)
 void	print_pthread(t_philo *philo, char *str)
 {
 	long long	time;
+
 	pthread_mutex_lock(&philo->table->print_mutex);
 	if (philo->table->someone_died == 1)
 	{

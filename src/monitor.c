@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 19:38:52 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/13 20:50:16 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/14 20:11:13 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	check_death(t_philo *philo)
 	if (time_w_food > philo->table->time_to_die)
 	{
 		pthread_mutex_lock(&philo->table->death_mutex);
+		print_pthread(philo, "died");
 		philo->table->someone_died = 1;
 		pthread_mutex_unlock(&philo->table->death_mutex);
 		return (1);
@@ -33,25 +34,35 @@ int	check_death(t_philo *philo)
 	return (0);
 }
 
-int	check_all_ate(t_table *table)
+int	check_all_ate(t_table **table)
 {
 	int	i;
 
-	if (table->num_meals == -1)
+	if ((*table)->num_meals == -1)
 		return (0);
 	i = 0;
-	while (i < table->num_philo)
+	while (i < (*table)->num_philo)
 	{
-		pthread_mutex_lock(&table->meal_mutex);
-		if (table->philos[i].meals_eaten < table->num_meals)
+		pthread_mutex_lock(&(*table)->meal_mutex);
+		if ((*table)->philos[i].meals_eaten < (*table)->num_meals)
 		{
-			pthread_mutex_unlock(&table->meal_mutex);
+			pthread_mutex_unlock(&(*table)->meal_mutex);
 			return (0);
 		}
-		pthread_mutex_unlock(&table->meal_mutex);
+		pthread_mutex_unlock(&(*table)->meal_mutex);
 		i++;
 	}
 	return (1);
+}
+
+int	death_row(t_philo *philo)
+{
+	int	died;
+
+	pthread_mutex_lock(&philo->table->death_mutex);
+	died = philo->table->someone_died;
+	pthread_mutex_unlock(&philo->table->death_mutex);
+	return (died);
 }
 
 void	*waiter_routine(void *arg)
@@ -68,14 +79,17 @@ void	*waiter_routine(void *arg)
 		while (i < table->num_philo)
 		{
 			if (check_death(&table->philos[i]) == 1)
-			{
-				print_pthread(&table->philos[i], "died");
 				return (NULL);
-			}
 			i++;
 		}
-		if (check_all_ate(table) == 1)
+		if (check_all_ate(&table) == 1)
+		{
+			pthread_mutex_lock(&table->death_mutex);
+			table->someone_died = 1;
+			pthread_mutex_unlock(&table->death_mutex);
+			death_row(table->philos);
 			return (NULL);
+		}
+		usleep(1000);
 	}
-	return (NULL);
 }
