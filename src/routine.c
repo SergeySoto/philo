@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 16:53:42 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/13 20:50:18 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/14 14:04:32 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,17 @@ void	sleep_routine(t_philo *philo)
 void	think_routine(t_philo *philo)
 {
 	print_pthread(philo, "is thinking");
+}
+
+void	*one_notes(void *arg)
+{
+	t_philo *philo;
+
+	philo = (t_philo *)arg;
+	print_pthread(philo, "has taken a fork");
+	precise_time(philo->table->time_to_die);
+	print_pthread(philo, "died");
+	return (0);
 }
 
 void	*start_routine(void *arg)

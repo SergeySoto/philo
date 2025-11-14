@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 15:59:34 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/13 20:52:50 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/14 14:06:42 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,47 +79,6 @@ int	init_forks(t_table *table)
 			printf("Error: initializing mutex\n");
 			return (hollocaust_mutex(table, i));
 		}
-		i++;
-	}
-	return (0);
-}
-
-int	safe_init_thread(t_table *table)
-{
-	int	i;
-
-	i = 0;
-
-	while (i < table->num_philo)
-	{
-		if (pthread_create(&table->philos[i].thread, NULL, &start_routine, &table->philos[i]) != 0)
-			return (hollocaust_mutex(table, table->num_philo));
-		i++;
-	}
-	if (pthread_create(&table->waiter_thread, NULL, &waiter_routine, table) != 0)
-		return (hollocaust_mutex(table, table->num_philo));
-	return (0);
-}
-
-int	init_threads(t_table *table)
-{
-	int	i;
-
-	i = 0;
-	if (table->num_philo == 1)
-	{
-		pthread_create(&table->philos[0].thread, NULL, &one_notes, &table->philos[0]);
-		pthread_join(table->philos[0].thread, NULL);
-		return (0);
-	}
-	if (safe_init_thread(table) == 1)
-		return (1);
-	if (pthread_join(table->waiter_thread, NULL) != 0)
-		return (hollocaust_mutex(table, table->num_philo));
-	while (i < table->num_philo)
-	{
-		if (pthread_join(table->philos[i].thread, NULL) != 0)
-			return (hollocaust_mutex(table, table->num_philo));
 		i++;
 	}
 	return (0);

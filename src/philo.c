@@ -6,22 +6,11 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 19:21:23 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/13 20:55:59 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/14 14:15:53 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
-
-void	*one_notes(void *arg)
-{
-	t_philo *philo;
-
-	philo = (t_philo *)arg;
-	print_pthread(philo, "has taken a fork");
-	precise_time(philo->table->time_to_die);
-	print_pthread(philo, "died");
-	return (0);
-}
 
 int	main(int argc, char **argv)
 {
@@ -40,7 +29,7 @@ int	main(int argc, char **argv)
 		return (1);
 	if (init_philo(table.philos, &table) == 1)
 		return (1);
-	if (init_threads(&table) == 1)
+	if (first_init_thread(&table) == 1)
 		return (1);
 	hollocaust_mutex(&table, table.num_philo);
 	return (0);

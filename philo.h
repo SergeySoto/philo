@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 19:38:54 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/13 19:52:50 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/14 14:16:38 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef struct s_philo
 }	t_philo;
 
 int			start_simulation(int argc, char **argv, t_table *table);
-void *		one_notes(void *arg);
 //Parse
 int			ft_isdigit(int c);
 int			ft_isspace(int c);
@@ -60,7 +59,6 @@ int			validate_args(int argc, char **argv);
 //Inits
 int			init_table(int argc, char **argv, t_table *table);
 int			init_philo(t_philo *philo, t_table *table);
-int			init_threads(t_table *table);
 int			init_forks(t_table *table);
 int			init_mutex(t_table *table);
 //Utils
@@ -74,10 +72,13 @@ void		*start_routine(void *arg);
 void		eat_routine(t_philo *philo);
 void		sleep_routine(t_philo *philo);
 void		think_routine(t_philo *philo);
-int			safe_init_thread(t_table *table);
+void		*one_notes(void *arg);
 //Monitor
 void		*waiter_routine(void *arg);
 int			check_death(t_philo *philo);
+//Threads
+int			first_init_thread(t_table *table);
+int			second_init_thread(t_table *table);
 
 
 #endif
