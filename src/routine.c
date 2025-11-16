@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: ssoto-su <ssoto-su@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 16:53:42 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/14 19:46:45 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/16 19:34:27 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ void	eat_routine(t_philo *philo)
 		pthread_mutex_lock(philo->left_fork);
 		print_pthread(philo, "has taken a fork");
 	}
+	pthread_mutex_lock(&philo->table->meal_mutex);
+	philo->last_meal_time = get_time();
+	pthread_mutex_unlock(&philo->table->meal_mutex);
 	print_pthread(philo, "is eating");
 	precise_time(philo->table->time_to_eat);
-	pthread_mutex_lock(&philo->table->death_mutex);
-	philo->last_meal_time = get_time();
-	pthread_mutex_unlock(&philo->table->death_mutex);
 	pthread_mutex_lock(&philo->table->meal_mutex);
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->table->meal_mutex);
@@ -67,8 +67,19 @@ void	*start_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->id % 2 == 0)
+	if (philo->table->num_philo % 2 == 0)
+	{
+		if (philo->id % 2 == 0)
 		usleep(philo->table->time_to_eat * 500);
+	}
+	else
+	{
+		if (philo->id % 2 == 0)
+			usleep(philo->table->time_to_eat * 500);
+		else if (philo->id == philo->table->num_philo)
+			think_routine(philo);
+	}
+	//usleep(philo->table->time_to_eat * 500);
 	while (1)
 	{
 		if (death_row(philo) == 1)

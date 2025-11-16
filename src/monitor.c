@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: ssoto-su <ssoto-su@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 19:38:52 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/14 20:11:13 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/16 18:46:20 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	check_death(t_philo *philo)
 	long long	time_w_food;
 
 	current_time = get_time();
-	pthread_mutex_lock(&philo->table->death_mutex);
+	pthread_mutex_lock(&philo->table->meal_mutex);
 	last_time = philo->last_meal_time;
-	pthread_mutex_unlock(&philo->table->death_mutex);
+	pthread_mutex_unlock(&philo->table->meal_mutex);
 	time_w_food = current_time - last_time;
 	if (time_w_food > philo->table->time_to_die)
 	{
@@ -90,6 +90,6 @@ void	*waiter_routine(void *arg)
 			death_row(table->philos);
 			return (NULL);
 		}
-		usleep(1000);
+		usleep(500);
 	}
 }
