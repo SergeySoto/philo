@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 19:38:52 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/17 19:17:40 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/17 19:40:59 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,6 @@ int	check_death(t_philo *philo)
 		pthread_mutex_unlock(&philo->table->death_mutex);
 		print_pthread(philo, "died");
 		pthread_mutex_lock(&philo->table->death_mutex);
-		//philo->table->someone_died = 1;
-		//pthread_mutex_unlock(&philo->table->death_mutex);
-		//pthread_mutex_lock(&philo->table->death_mutex);
 		philo->table->someone_died = 1;
 		pthread_mutex_unlock(&philo->table->death_mutex);
 		return (1);
@@ -71,6 +68,13 @@ int	death_row(t_philo *philo)
 	return (died);
 }
 
+static void	axel_died(t_table *table)
+{
+	pthread_mutex_lock(&table->death_mutex);
+	table->someone_died = 1;
+	pthread_mutex_unlock(&table->death_mutex);
+}
+
 void	*waiter_routine(void *arg)
 {
 	t_table	*table;
@@ -93,10 +97,7 @@ void	*waiter_routine(void *arg)
 		}
 		if (check_all_ate(table) == 1)
 		{
-			pthread_mutex_lock(&table->death_mutex);
-			table->someone_died = 1;
-			pthread_mutex_unlock(&table->death_mutex);
-			//death_row(table->philos);
+			axel_died(table);
 			return (NULL);
 		}
 		usleep(100);
