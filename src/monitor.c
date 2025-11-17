@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 19:38:52 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/17 10:46:09 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/17 14:05:43 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	check_death(t_philo *philo)
 	last_time = philo->last_meal_time;
 	pthread_mutex_unlock(&philo->table->meal_mutex);
 	time_w_food = current_time - last_time;
-	if (time_w_food > philo->table->time_to_die)
+	if (time_w_food >= philo->table->time_to_die)
 	{
 		pthread_mutex_lock(&philo->table->death_mutex);
 		print_pthread(philo, "died");
