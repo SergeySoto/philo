@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 15:59:34 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/14 14:06:42 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/17 10:09:00 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	init_philo(t_philo *philo, t_table *table)
 		philo[i].left_fork = &table->forks[i];
 		philo[i].right_fork = &table->forks[(i + 1) % table->num_philo];
 		philo[i].table = table;
+		philo[i].last_meal_time = table->start_time;
 		i++;
 	}
 	return (0);

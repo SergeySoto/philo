@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 19:38:54 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/14 19:45:07 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/17 10:44:57 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void		*one_notes(void *arg);
 void		*waiter_routine(void *arg);
 int			check_death(t_philo *philo);
 int			death_row(t_philo *philo);
+int			check_all_ate(t_table *table);
 //Threads
 int			first_init_thread(t_table *table);
 int			second_init_thread(t_table *table);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssoto-su <ssoto-su@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 19:38:52 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/16 18:46:20 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/17 10:46:09 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,22 @@ int	check_death(t_philo *philo)
 	return (0);
 }
 
-int	check_all_ate(t_table **table)
+int	check_all_ate(t_table *table)
 {
 	int	i;
 
-	if ((*table)->num_meals == -1)
+	if (table->num_meals == -1)
 		return (0);
 	i = 0;
-	while (i < (*table)->num_philo)
+	while (i < table->num_philo)
 	{
-		pthread_mutex_lock(&(*table)->meal_mutex);
-		if ((*table)->philos[i].meals_eaten < (*table)->num_meals)
+		pthread_mutex_lock(&table->meal_mutex);
+		if (table->philos[i].meals_eaten < table->num_meals)
 		{
-			pthread_mutex_unlock(&(*table)->meal_mutex);
+			pthread_mutex_unlock(&table->meal_mutex);
 			return (0);
 		}
-		pthread_mutex_unlock(&(*table)->meal_mutex);
+		pthread_mutex_unlock(&table->meal_mutex);
 		i++;
 	}
 	return (1);
@@ -82,7 +82,7 @@ void	*waiter_routine(void *arg)
 				return (NULL);
 			i++;
 		}
-		if (check_all_ate(&table) == 1)
+		if (check_all_ate(table) == 1)
 		{
 			pthread_mutex_lock(&table->death_mutex);
 			table->someone_died = 1;
@@ -90,6 +90,6 @@ void	*waiter_routine(void *arg)
 			death_row(table->philos);
 			return (NULL);
 		}
-		usleep(500);
+		usleep(1000);
 	}
 }
