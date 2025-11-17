@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 19:38:54 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/17 10:44:57 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/17 18:10:11 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int			init_mutex(t_table *table);
 int			mem_alloc(t_table *table);
 int			hollocaust_mutex(t_table *table, int size);
 long long	get_time(void);
-void		precise_time(long long time);
+void		precise_time(t_philo *philo, long long time);
 void		print_pthread(t_philo *philo, char *str);
 //Routine
 void		*start_routine(void *arg);

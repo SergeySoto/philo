@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssoto-su <ssoto-su@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 11:59:28 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/16 18:57:58 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/17 18:09:47 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ long long	get_time(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-void	precise_time(long long time)
+void	precise_time(t_philo *philo, long long time)
 {
 	long long	start;
 	long long	current_time;
@@ -70,10 +70,12 @@ void	precise_time(long long time)
 	start = get_time();
 	while (1)
 	{
+		if (death_row(philo) == 1)
+			return;
 		current_time = get_time();
 		if (current_time - start >= time)
 			break ;
-		usleep(100);
+		usleep(500);
 	}
 }
 
@@ -81,12 +83,14 @@ void	print_pthread(t_philo *philo, char *str)
 {
 	long long	time;
 
-	pthread_mutex_lock(&philo->table->print_mutex);
+	pthread_mutex_lock(&philo->table->death_mutex);
 	if (philo->table->someone_died == 1)
 	{
-		pthread_mutex_unlock(&philo->table->print_mutex);
-		return ;
+		pthread_mutex_unlock(&philo->table->death_mutex);
+			return ;
 	}
+	pthread_mutex_unlock(&philo->table->death_mutex);
+	pthread_mutex_lock(&philo->table->print_mutex);
 	time = get_time() - philo->table->start_time;
 	printf("%lld %d %s\n", time, philo->id, str);
 	pthread_mutex_unlock(&philo->table->print_mutex);
