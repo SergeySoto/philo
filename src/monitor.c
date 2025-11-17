@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 19:38:52 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/17 18:14:01 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/17 19:17:40 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,6 @@ void	*waiter_routine(void *arg)
 			//death_row(table->philos);
 			return (NULL);
 		}
-		usleep(1000);
+		usleep(100);
 	}
 }
