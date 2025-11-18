@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 19:21:23 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/14 17:27:04 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/18 15:18:54 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ int	main(int argc, char **argv)
 {
 	t_table	table;
 
+	if (argc < 5 || argc > 6)
+	{
+		printf("Wrong number of arguments\n");
+		return (1);
+	}
 	if (validate_args(argc, argv) == 1)
 	{
 		printf("Error\n");

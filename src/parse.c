@@ -6,7 +6,7 @@
 /*   By: ssoto-su <ssoto-su@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 12:42:11 by ssoto-su          #+#    #+#             */
-/*   Updated: 2025/11/06 18:45:47 by ssoto-su         ###   ########.fr       */
+/*   Updated: 2025/11/18 15:19:07 by ssoto-su         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,6 @@ int	validate_args(int argc, char **argv)
 	int	num;
 
 	num = 0;
-	if (argc < 5 || argc > 6)
-	{
-		printf("Wrong number of arguments\n");
-		return (1);
-	}
 	i = 1;
 	while (i < argc)
 	{
